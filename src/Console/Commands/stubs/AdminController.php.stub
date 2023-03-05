@@ -1,0 +1,7 @@
+<?php
+
+namespace {%namespace%};
+
+class {%classname%} extends {%base_class%}
+{
+}
