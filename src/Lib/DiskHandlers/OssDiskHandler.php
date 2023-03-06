@@ -26,9 +26,16 @@ class OssDiskHandler extends BaseDiskHandler
         if (!$timeout) {
             return $this->getFileUrlForever($path, $options);
         }
+        $cache_key = md5($this->getDiskName() . $path . implode(',', $options));
+        if ($url = cache()->get($cache_key)) {
+            return $url;
+        }
+
         /** @var OssAdapter $adapter */
         $adapter = Storage::disk($this->getDiskName())->getAdapter();
-        return $adapter->getTemporaryUrl($path, $timeout, $options);
+        $url = $adapter->getTemporaryUrl($path, $timeout, $options);
+        cache()->put($cache_key, $url, max($timeout - 200, 1));
+        return $url;
     }
 
     public function getFileUrlForever(string $path, $options = []): string
