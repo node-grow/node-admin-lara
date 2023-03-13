@@ -11,8 +11,18 @@
 composer create-project laravel/laravel [项目目录名称]
 ```
 
-2. 初始化git
+2. 引入node-admin
+
 ```shell
 cd [项目目录]
 composer require node-admin/node-admin
+```
+
+3. [可选] 执行命令下载后台前端资源
+
+```shell
+php artisan node-admin:download-assets
+
+# 若不能下载可使用代理
+php artisan node-admin:download-assets --proxy=[代理url] 
 ```
