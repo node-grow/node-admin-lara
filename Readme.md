@@ -18,7 +18,12 @@
     composer require node-admin/node-admin
     ```
 
-3. [可选] 执行命令下载后台前端资源
+3. 更改.env文件信息后执行初始化
+    ```shell
+    php artisan node-admin:install
+    ``` 
+
+4. [可选] 执行命令下载后台前端资源
 
     ```shell
     php artisan node-admin:download-assets
