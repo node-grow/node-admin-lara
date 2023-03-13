@@ -8,6 +8,7 @@ use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use NodeAdmin\Console\Commands\DownloadAssets;
 use NodeAdmin\Console\Commands\Install;
 use NodeAdmin\Http\Middlewares\CheckPermission;
 use NodeAdmin\Http\Middlewares\TransformException;
@@ -20,8 +21,9 @@ use NodeAdmin\Models\Files;
 
 class NodeAdminProvider extends ServiceProvider
 {
-    protected $commands=[
+    protected $commands= [
         Install::class,
+        DownloadAssets::class,
     ];
 
     protected $middlewareGroups=[

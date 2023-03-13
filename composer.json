@@ -19,6 +19,8 @@
         }
     },
     "require": {
+        "ext-curl": "*",
+        "ext-zip": "*",
         "laravel/passport": "^10.4",
         "mews/captcha": "^3.2",
         "laravel-lang/lang": "^10.7.1",

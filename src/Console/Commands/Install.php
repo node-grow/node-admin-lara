@@ -13,12 +13,6 @@ class Install extends Command
     protected $signature="node-admin:install";
     protected $fs;
 
-//    protected $init_call_seeder=[
-//        AdminMenu::class=>AdminMenuSeeder::class,
-//        AdminUser::class=>AdminUserSeeder::class,
-//        Config::class=>ConfigSeeder::class,
-//    ];
-
     public function __construct(Filesystem $fs)
     {
         parent::__construct();
@@ -37,14 +31,6 @@ class Install extends Command
 
     private function _initDatabase(){
         $this->call('migrate',['--force'=>'true']);
-
-//        foreach ($this->init_call_seeder as $model=>$seeder){
-//            /** @var Builder $query */
-//            $query=call_user_func([$model,'query']);
-//            if($query->count() == 0){
-//                $this->call('db:seed', ['--class' =>$seeder]);
-//            }
-//        }
     }
 
     private function _copyRoutes(){
