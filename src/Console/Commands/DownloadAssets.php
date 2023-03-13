@@ -34,8 +34,8 @@ class DownloadAssets extends Command
         $release = $this->requestRelease();
         $asset = $release['assets'][0];
         $version = '';
-        if ($fs->exists('version.lock')) {
-            $version = $fs->get('version.lock');
+        if ($fs->exists(public_path('/admin/version.lock'))) {
+            $version = $fs->get(public_path('/admin/version.lock'));
         }
         if ($release['tag_name'] === $version) {
             $this->getOutput()->text('资源已是最新版本，无需更新');
@@ -55,7 +55,7 @@ class DownloadAssets extends Command
 
         $fs->copyDirectory(sys_get_temp_dir() . '/node-admin-asset/dist', public_path('/admin'));
         $this->getOutput()->text('资源解压完成');
-        $fs->put('version.lock', $release['tag_name']);
+        $fs->put(public_path('/admin/version.lock'), $release['tag_name']);
     }
 
     protected function requestRelease()
