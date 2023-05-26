@@ -3,6 +3,7 @@
 namespace NodeAdmin\Lib;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Collection;
 use NodeAdmin\Models\Files;
 
 class FileFieldAttribute extends Attribute
@@ -28,6 +29,9 @@ class FileFieldAttribute extends Attribute
                     return $file_list->id;
                 }
                 if ($isMultiple) {
+                    if ($file_list instanceof Collection){
+                        return $file_list->map(fn($file)=>$file['id'])->join(',');
+                    }
                     return implode(',', array_map(fn($file) => $file['id'], $file_list));
                 }
                 if (!$file_list) {
