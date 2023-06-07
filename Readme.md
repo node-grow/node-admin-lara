@@ -31,3 +31,19 @@
     # 若不能下载可使用代理
     php artisan node-admin:download-assets --proxy=[代理url] 
     ```
+
+## 更新日志
+
+### 1.2.0
+
+1. 添加node-admin:distinct-by-db命令，可将地区爬取到数据库中
+
+```shell
+php artisan node-admin:distinct-by-db
+# 或发布迁移文件
+php artisan vendor:publish --tag=distinct-by-db
+```
+
+### 1.1.0
+
+1. 添加node-admin:download-assets命令，将前端资源下载到/public/admin目录

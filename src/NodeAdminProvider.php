@@ -96,12 +96,16 @@ class NodeAdminProvider extends ServiceProvider
         $this->loadAdminRoutes();
 
         //视图
-        $this->loadViewsFrom(NODE_ADMIN_PATH.'/resources/views', 'admin');
+        $this->loadViewsFrom(NODE_ADMIN_PATH . '/resources/views', 'admin');
 
         //发布
         $this->publishes([
-            NODE_ADMIN_PATH.'/config/admin.php' => config_path('admin.php'),
-        ],'admin-config');
+            NODE_ADMIN_PATH . '/config/admin.php' => config_path('admin.php'),
+        ], 'admin-config');
+
+        $this->publishes([
+            NODE_ADMIN_PATH . '/publish/distinct-by-db/migrations' => database_path('migrations'),
+        ], 'distinct-by-db');
     }
 
     protected function loadAdminRoutes(){
