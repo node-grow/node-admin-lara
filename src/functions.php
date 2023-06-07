@@ -1,6 +1,5 @@
 <?php
 
-use ChinaDivisions\Division;
 use Illuminate\Contracts\Auth\Authenticatable;
 use NodeAdmin\Models\Files;
 
@@ -88,14 +87,7 @@ if (!function_exists('getFilesValueById')) {
 if (!function_exists('getDivisionNameByIds')) {
     function getDivisionNameByIds(array $ids, $separator = ','): string
     {
-        $id = last($ids);
-        $name = cache()->get('division_name_by_id_' . $id, '');
-        if ($name) {
-            return $name;
-        }
-        $division = new Division($id);
-        $res = join($separator, array_map(fn(Division $division) => $division->self()['divisionAbbName'], $division->ancestors()));
-        cache()->put('division_name_by_id_' . $id, $res, 600);
-        return $res;
+        $service = new \NodeAdmin\Services\DistrictService();
+        return $service->getNamesByIds($ids, $separator);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use NodeAdmin\Console\Commands\DistinctByDB;
 use NodeAdmin\Console\Commands\DownloadAssets;
 use NodeAdmin\Console\Commands\Install;
 use NodeAdmin\Http\Middlewares\CheckPermission;
@@ -24,6 +25,7 @@ class NodeAdminProvider extends ServiceProvider
     protected $commands= [
         Install::class,
         DownloadAssets::class,
+        DistinctByDB::class,
     ];
 
     protected $middlewareGroups=[
