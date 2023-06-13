@@ -17,7 +17,7 @@ class OssDiskHandler extends BaseDiskHandler
     public function getFileUrl(string $path, $options = null): string
     {
         $default_options = [
-            'timeout' => 3600,
+            'timeout' => 86400,
         ];
         $options = array_merge($default_options, $options ?? []);
 
