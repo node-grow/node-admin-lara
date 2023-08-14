@@ -23,7 +23,7 @@
         "ext-zip": "*",
         "laravel/passport": "^11.8",
         "mews/captcha": "^3.2",
-        "laravel-lang/lang": "^10.7.1 | ^11.0 | ^12.0",
+        "laravel-lang/lang": "^13.0.1",
         "laravel-lang/publisher": "^13.0 | ^14.0",
         "wi1dcard/china-divisions": "^0.3.0",
         "symfony/filesystem": ">=6.0",
