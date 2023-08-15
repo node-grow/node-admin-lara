@@ -8,6 +8,9 @@ use OSS\OssClient;
 
 class OssDiskHandler extends BaseDiskHandler
 {
+    protected array $default_options = [
+        'timeout' => 86400,
+    ];
 
     public function getDiskName(): string
     {
@@ -16,10 +19,7 @@ class OssDiskHandler extends BaseDiskHandler
 
     public function getFileUrl(string $path, $options = null): string
     {
-        $default_options = [
-            'timeout' => 86400,
-        ];
-        $options = array_merge($default_options, $options ?? []);
+        $options = $this->transformOptions($options);
 
         $timeout = $options['timeout'];
         unset($options['timeout']);

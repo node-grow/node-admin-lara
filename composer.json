@@ -21,6 +21,7 @@
     "require": {
         "ext-curl": "*",
         "ext-zip": "*",
+        "php": "^8.0",
         "laravel/passport": "^11.8",
         "mews/captcha": "^3.2",
         "laravel-lang/lang": "^10.7.1 | ^11.0 | ^12.0",

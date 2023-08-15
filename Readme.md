@@ -32,6 +32,42 @@
     php artisan node-admin:download-assets --proxy=[代理url] 
     ```
 
+### 上传文件说明
+
+前提：执行完上述命令
+
+1. 把 App\Http\Controllers\Admin\UploadController 修改继承NodeAdmin\Http\Controllers\Upload\下的基类
+    ```php 
+   //例：
+    <?php
+   
+    namespace App\Http\Controllers\Admin;
+    
+    use NodeAdmin\Http\Controllers\Upload\PublicController;
+    
+    class UploadController extends PublicController
+    {
+    }
+
+   ```
+
+2. 在App\Providers\AppServiceProvider 注册 文件处理类
+   ```php
+    use Illuminate\Support\ServiceProvider;
+    use NodeAdmin\Lib\DiskHandlers\PublicHandler;
+    use NodeAdmin\Models\Files;
+    
+    class AppServiceProvider extends ServiceProvider
+    {
+        // ...
+        public   function boot()
+        {
+            // ...
+            Files::addDiskHandler(new PublicHandler());
+        }
+    }
+   ```
+
 ## 更新日志
 
 ### 1.2.0

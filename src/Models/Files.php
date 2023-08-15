@@ -8,7 +8,18 @@ use NodeAdmin\Lib\DiskHandlers\BaseDiskHandler;
 
 class Files extends Model
 {
-    protected $fillable=[
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'status',
+        'type',
+        'filename',
+        'ext',
+        'disk',
+        'path',
+    ];
+
+    protected $fillable = [
         'filename',
         'url',
         'size',
@@ -18,18 +29,20 @@ class Files extends Model
         'disk',
     ];
 
-    /** @var BaseDiskHandler[] $disk_handlers  */
-    protected static $disk_handlers=[];
+    /** @var BaseDiskHandler[] $disk_handlers */
+    protected static $disk_handlers = [];
 
     /**
      * 增加disk_handler
      * @param BaseDiskHandler $handler
      */
-    public static function addDiskHandler(BaseDiskHandler $handler){
-        self::$disk_handlers[$handler->getDiskName()]=$handler;
+    public static function addDiskHandler(BaseDiskHandler $handler)
+    {
+        self::$disk_handlers[$handler->getDiskName()] = $handler;
     }
 
-    public function getUrl($options=null){
+    public function getUrl($options = null)
+    {
         if (!$options && $this->url) {
             return $this->url;
         }
@@ -41,11 +54,9 @@ class Files extends Model
 
     public function toArray()
     {
-        $res=[];
-        $res['id'] = $this->id;
-        $res['name']=$this->filename;
+        $res = parent::toArray();
+        $res['name'] = $this->filename;
         $res['url'] = $this->getUrl();
-        $res['size'] = $this->size;
         return $res;
     }
 }

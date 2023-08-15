@@ -29,8 +29,8 @@ class FileFieldAttribute extends Attribute
                     return $file_list->id;
                 }
                 if ($isMultiple) {
-                    if ($file_list instanceof Collection){
-                        return $file_list->map(fn($file)=>$file['id'])->join(',');
+                    if ($file_list instanceof Collection) {
+                        return $file_list->map(fn($file) => $file['id'])->join(',');
                     }
                     return implode(',', array_map(fn($file) => $file['id'], $file_list));
                 }
