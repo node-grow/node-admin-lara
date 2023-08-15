@@ -1,6 +1,6 @@
 {
     "name": "node-admin/node-admin",
-    "description": "description",
+    "description": "node-admin for laravel development",
     "minimum-stability": "stable",
     "license": "proprietary",
     "authors": [
