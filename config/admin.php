@@ -27,5 +27,16 @@ return [
             "type" => "inner_path",
             "closable" => false
         ]
-    ]
+    ],
+
+    'modules' => [
+        'admin' => [ // 默认模块，请勿删除
+            'nav' => '平台',
+            'route' => [
+                'name' => 'admin.',
+                'file' => base_path('routes/admin.php'),
+                'prefix' => '/admin',
+            ]
+        ],
+    ],
 ];

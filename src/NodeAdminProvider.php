@@ -110,14 +110,15 @@ class NodeAdminProvider extends ServiceProvider
 
     protected function loadAdminRoutes(){
         $fs=$this->app->make(Filesystem::class);
-        if (!$fs->exists(base_path('routes/admin.php'))){
-            return;
+        foreach (config('admin.modules') as $module) {
+            if (!$fs->exists($module['route']['file'])) {
+                return;
+            }
+            Route::middleware(['node-admin'])
+                ->prefix($module['route']['prefix'])
+                ->name($module['route']['name'])
+                ->group($module['route']['file']);
         }
-        Route::middleware(['node-admin'])
-            ->prefix('/admin')
-            ->name('admin.')
-//            ->group(NODE_ADMIN_PATH.'/route/admin.php');
-            ->group(base_path('routes/admin.php'));
     }
 
     protected function passportTokenSetting(){

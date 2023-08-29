@@ -16,9 +16,6 @@ class AdminMenuController extends ResourceController
 
     public function table(Table $table)
     {
-        $table->actions(function (Table\ActionsContainer $container) {
-            $container->create()->defaultOperation();
-        });
         $table->columns(function (Table\ColumnsContainer $container) {
             $container->text('title', '菜单名');
             $container->text('url', '路由');
@@ -28,8 +25,7 @@ class AdminMenuController extends ResourceController
             ]);
 
             $container->actions('', '操作')->setActions(function (Table\Columns\Actions\ActionsContainer $container) {
-                $container->edit()->defaultOperation('menu', '编辑');
-                $container->delete()->defaultOperation('menu');
+                $container->edit()->defaultOperation('menu');
             });
         });
     }
@@ -55,36 +51,6 @@ class AdminMenuController extends ResourceController
         }
         return $menu;
     }
-
-    public function create(Form $form)
-    {
-        $select = $this->getMenuSelect();
-        $form->items(function (Form\ItemsContainer $container) use ($select) {
-            $container->select('pid', '所属菜单', '不选则为根目录')->setOptions($select);
-            $container->input('title', '菜单名');
-            $container->iconfont('icon','图标');
-            $container->input('url', '路由');
-            $container->input('name', '控制器');
-        });
-        $form->actions(function (Form\ActionsContainer $container) {
-                $container->submit()->request(action([get_class($this), 'store']), 'post');
-        });
-        return $form;
-    }
-
-    public function store(AdminMenu $menu, AdminMenuService $adminMenuService)
-    {
-        $data = $adminMenuService->saveVidation();
-        $menu->query()->create([
-            'title' => $data['title'],
-            'pid' => $data['pid']?:0,
-            'icon' => $data['icon'],
-            'url'=>$data['url'],
-            'name'=>$data['name']
-        ]);
-        return new NodeResponse('', '新增成功');
-    }
-
 
     public function edit(AdminMenu $menu, Form $form)
     {
@@ -113,12 +79,6 @@ class AdminMenuController extends ResourceController
         $menu->icon = $data['icon'];
       $menu->save();
         return new NodeResponse('', '保存成功');
-    }
-
-    public function destroy(AdminMenu $menu)
-    {
-        $menu->destroy([$menu->id]);
-        return new NodeResponse('', '删除成功');
     }
 
     public function getMenuSelect(){
