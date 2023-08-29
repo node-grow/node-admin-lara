@@ -9,7 +9,7 @@ use NodeAdmin\Lib\Utils\MenuGenerator\Menu\Link;
 use NodeAdmin\Models\AdminMenu;
 
 /**
- * @method Collapse collapse($title)
+ * @method Collapse collapse($title, $icon = 'icon-font-bianhao20190805')
  * @method Link link($title, $name = '', $url = '')
  */
 class MenuContainer

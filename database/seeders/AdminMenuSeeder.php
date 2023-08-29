@@ -15,7 +15,7 @@ class AdminMenuSeeder extends Seeder
     public function run()
     {
 
-        $setting_menu_id = AdminMenu::query()->insertGetId(['sort'=>'99','title' => '后台管理']);
+        $setting_menu_id = AdminMenu::query()->insertGetId(['sort' => '99', 'title' => '后台管理', 'icon' => 'icon-font-fayun']);
 
         $insert_data = [
             [

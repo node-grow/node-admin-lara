@@ -12,8 +12,9 @@ abstract class BaseMenu
         'url' => '',
         'sort' => 0,
         'pid' => 0,
-        'level' => 0,
-        'module' => '',
+        'level' => 1,
+        'module' => 'admin',
+        'icon' => '',
     ];
 
     public function setModule($module)
@@ -37,6 +38,12 @@ abstract class BaseMenu
     public function setLevel($level)
     {
         $this->data['level'] = $level;
+        return $this;
+    }
+
+    public function setIcon($icon)
+    {
+        $this->data['icon'] = $icon;
         return $this;
     }
 }

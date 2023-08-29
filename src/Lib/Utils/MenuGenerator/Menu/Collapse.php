@@ -9,9 +9,10 @@ class Collapse extends BaseMenu
 {
     protected MenuContainer $container;
 
-    public function __construct($title)
+    public function __construct($title, $icon = 'icon-font-bianhao20190805')
     {
         $this->data['title'] = $title;
+        $this->data['icon'] = $icon;
 
         /** @var MenuContainer $container */
         $this->container = app()->make(MenuContainer::class);
@@ -33,6 +34,7 @@ class Collapse extends BaseMenu
         if (!$t_menu) {
             $t_menu = AdminMenu::query()->forceCreate([
                 'pid' => $this->data['pid'],
+                'icon' => $this->data['icon'],
                 'title' => $this->data['title'],
                 'level' => $this->data['level'],
                 'module' => $this->data['module'],
