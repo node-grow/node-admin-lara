@@ -130,6 +130,14 @@ public function getMenu($module = 'admin')
 ```php
 //app/Http/Controllers/Admin/MenuController.php
 
+public function getModule()
+{
+    $this->module_badge = [
+        //模块标识 => 徽标数
+        'admin' => 10
+    ];
+    return parent::getModule();
+}
 ```
 
 
