@@ -70,6 +70,69 @@
 
 ## 更新日志
 
+### 1.2.6
+
+1. 增加菜单生成工具类
+
+```php
+use NodeAdmin\Lib\Utils\MenuGenerator;
+
+MenuGenerator::gen(function (MenuGenerator\MenuContainer $container) {
+    $container->collapse('测试1111')->children(function (MenuGenerator\MenuContainer $container) {
+        $container->link('哈哈', 'menu');
+    });
+});
+```
+
+2. 增加多管理模块配置
+
+```php
+// 将下列代码放入 config/admin.php
+    'modules' => [
+        'admin' => [ // 默认模块，请勿删除
+            'nav' => '平台',
+            'route' => [
+                'name' => 'admin.',
+                'file' => base_path('routes/admin.php'),
+                'prefix' => '/admin',
+            ]
+        ],
+        
+        'admin2' => [//增加的模块标识
+            'nav' => '平台2', //后台顶部菜单名
+            'route' => [ //路由组配置
+                'name' => 'admin2.', //路由组名
+                'file' => base_path('routes/admin2.php'), //路由组文件
+                'prefix' => '/admin2', //路由组前缀
+            ]
+        ]
+    ],
+```
+
+3. 增加菜单badge配置
+
+```php
+//app/Http/Controllers/Admin/MenuController.php
+
+public function getMenu($module = 'admin')
+{
+    $this->route_badge = [
+        //菜单路由名 => 徽标数
+        'admin.menu.index' => 10,
+    ];
+
+    return parent::getMenu($module);
+}
+```
+
+4. 增加模块badge配置
+
+```php
+//app/Http/Controllers/Admin/MenuController.php
+
+```
+
+
 ### 1.2.0
 
 1. 添加node-admin:distinct-by-db命令，可将地区爬取到数据库中
