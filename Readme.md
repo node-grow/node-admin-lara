@@ -78,7 +78,9 @@
 use NodeAdmin\Lib\Utils\MenuGenerator;
 
 MenuGenerator::gen(function (MenuGenerator\MenuContainer $container) {
+    // 父菜单
     $container->collapse('测试1111')->children(function (MenuGenerator\MenuContainer $container) {
+        // 子菜单
         $container->link('哈哈', 'menu');
     });
 });
@@ -139,7 +141,6 @@ public function getModule()
     return parent::getModule();
 }
 ```
-
 
 ### 1.2.0
 
