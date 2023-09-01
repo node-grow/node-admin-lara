@@ -3,9 +3,9 @@
 namespace NodeAdmin\Lib\Utils\MenuGenerator;
 
 use Illuminate\Support\Str;
-use NodeAdmin\Lib\Utils\MenuGenerator\Menu\BaseMenu;
-use NodeAdmin\Lib\Utils\MenuGenerator\Menu\Collapse;
-use NodeAdmin\Lib\Utils\MenuGenerator\Menu\Link;
+use NodeAdmin\Lib\Utils\MenuGenerator\Menus\BaseMenu;
+use NodeAdmin\Lib\Utils\MenuGenerator\Menus\Collapse;
+use NodeAdmin\Lib\Utils\MenuGenerator\Menus\Link;
 use NodeAdmin\Models\AdminMenu;
 
 /**
@@ -21,7 +21,7 @@ class MenuContainer
 
     public function __call(string $name, array $arguments)
     {
-        $class = 'NodeAdmin\\Lib\\Utils\\MenuGenerator\\Menu\\' . Str::ucfirst($name);
+        $class = 'NodeAdmin\\Lib\\Utils\\MenuGenerator\\Menus\\' . Str::ucfirst(Str::camel($name));
         if (!class_exists($class)) {
             throw new \RuntimeException('class ' . $class . ' does not exist');
         }

@@ -56,10 +56,11 @@ class AdminUserController extends ResourceController
 
     public function store(AdminUser $user, AdminUserService $adminUserService)
     {
-        list($username, $password) = $adminUserService->saveVidation();
+        list($username, $password, $role_id) = $adminUserService->saveVidation();
         $user->query()->create([
             'username' => $username,
-            'password' => $password
+            'password' => $password,
+            'role_id' => $role_id
         ]);
         return new NodeResponse('', '新增成功');
     }
@@ -81,9 +82,10 @@ class AdminUserController extends ResourceController
 
     public function update(AdminUser $user, AdminUserService $adminUserService)
     {
-        list($username, $password) = $adminUserService->saveVidation();
+        list($username, $password, $role_id) = $adminUserService->saveVidation(false);
         $user->username = $username;
-        $user->password = $password;
+        $password && $user->password = $password;
+        $user->role_id = $role_id;
         $user->save();
         return new NodeResponse('', '保存成功');
     }

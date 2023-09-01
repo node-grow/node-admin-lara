@@ -67,11 +67,17 @@ class RoleController extends ResourceController
     public function edit(AdminRole $role,Form $form)
     {
         $form->setData(array_merge($role->toArray(),['permissions'=>$role->permissions()->get()->toArray()]));
-        $form->items(function (Form\ItemsContainer $container){
+        $form->items(function (Form\ItemsContainer $container) use ($role) {
             $container->input('name','角色名');
             $container->textarea('description','描述');
-            $container->custom('permissions','权限')
-                ->addItemOption('permissions',treeForCollection(AdminPermission::query()->get()))
+
+            if ($role->id == config('admin.super_admin_role_id')) {
+                $container->text('', '说明')->setText('超管角色无须配置权限点');
+                return;
+            }
+
+            $container->custom('permissions', '权限')
+                ->addItemOption('permissions', treeForCollection(AdminPermission::query()->get()))
                 ->setUrl(asset('/assets/node-admin/components/PermissionTransfer.umd.min.js'));
         });
         $form->actions(function (Form\ActionsContainer $container) use ($role) {

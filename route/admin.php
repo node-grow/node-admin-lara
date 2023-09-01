@@ -22,10 +22,12 @@ Route::middleware('admin:auth')->group(function () {
 
     Route::resource('users', Controllers\Admin\AdminUserController::class);
 
-    Route::resource('menu', Controllers\Admin\AdminMenuController::class);
-    Route::put('menu/{menu}/sort', [Controllers\Admin\AdminMenuController::class, 'sort'])->name('menu.sort');
+    Route::get('menu/{module?}', [Controllers\Admin\AdminMenuController::class, 'index'])->name('menu.index');
+    Route::get('menu/{menu}/edit', [Controllers\Admin\AdminMenuController::class, 'edit'])->name('menu.edit');
+    Route::put('menu/{menu}', [Controllers\Admin\AdminMenuController::class, 'update'])->name('menu.update');
+    Route::put('menu//{menu}/sort', [Controllers\Admin\AdminMenuController::class, 'sort'])->name('menu.sort');
 
-    Route::get('sysSetting', [Controllers\Admin\ConfigController::class, 'getConfig'])->name('sysSetting.index');
+    Route::get('sysSetting/{group?}', [Controllers\Admin\ConfigController::class, 'getConfig'])->name('sysSetting.index');
     Route::post('update', [Controllers\Admin\ConfigController::class, 'update'])->name('config.update');
 
     Route::resource('permission', Controllers\Admin\PermissionController::class);
@@ -36,8 +38,8 @@ Route::middleware('admin:auth')->group(function () {
 
 });
 
-Route::resource('divisions',Controllers\Admin\DivisionsController::class,[
-    'only'=>['index','show']
+Route::resource('divisions', Controllers\Admin\DivisionsController::class, [
+    'only' => ['index', 'show']
 ]);
 
 Route::post('/upload/callback', [Controllers\Admin\UploadController::class, 'callback'])->name('upload.callback');

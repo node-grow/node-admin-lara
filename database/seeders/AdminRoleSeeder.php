@@ -18,6 +18,7 @@ class AdminRoleSeeder extends Seeder
         //
         AdminRole::query()->truncate();
         $role=AdminRole::query()->create([
+            'id' => config('admin.super_admin_role_id'),
             'name' => '超级管理员',
             'description' => '',
         ]);

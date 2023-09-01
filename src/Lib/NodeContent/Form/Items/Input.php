@@ -19,4 +19,13 @@ class Input extends BaseItem
         ];
         $this->render_data['name']='';
     }
+
+    public function setAutoComplete(array $options, $url = '')
+    {
+        $this->render_data['item_option']['auto_complete'] = true;
+        $this->render_data['item_option']['auto_complete_options'] = $options;
+        $this->render_data['item_option']['auto_complete_options_url'] = $url;
+
+        return $this;
+    }
 }

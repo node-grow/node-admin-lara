@@ -4,6 +4,7 @@ namespace NodeAdmin\Http\Controllers\Admin;
 
 use NodeAdmin\Lib\NodeContent\Form;
 use NodeAdmin\Lib\NodeContent\NodeResponse;
+use NodeAdmin\Lib\NodeContent\Tab;
 use NodeAdmin\Lib\ResourceController;
 use NodeAdmin\Models\Config;
 use NodeAdmin\Models\Files;
@@ -11,31 +12,36 @@ use NodeAdmin\Models\Files;
 class ConfigController extends ResourceController
 {
     static $TEXT = 'text'; //单行文本
-    static $TEXTAREA = 'textarea'; //单行文本
+    static $TEXTAREA = 'textarea'; //多行文本
     static $SELECT = 'select'; //选择框
     static $IMAGE = 'image'; //选择框
     static $WANG_EDITOR = 'wang_editor'; //富文本
 
-    public function getConfig(Form $form)
+    protected $upload_url = '';
+
+    public function getConfig(Form $form, Tab $tab, string $group = '')
     {
-        $config = Config::query()->get()->toArray();
-//        array_push($config,[
-//            'type'=>'select',
-//            'value'=>2,
-//            'name'=>'SELECT',
-//            'title'=>'下拉',
-//            'option'=>json_encode([["label"=>"123","value"=>"123"]])
-//        ]);
+        if (!$group) {
+            $tab->tabs(function (Tab\TabContainer $container) {
+                $container->tab_pane('default', '默认', route('admin.sysSetting.index', ['group' => 'default']));
+                $container->tab_pane('other', '其它', route('admin.sysSetting.index', ['group' => 'other']));
+            });
+            return $tab;
+        }
+
+        $upload_url = $this->upload_url ?: route('admin.upload');
+
+        $config = Config::query()->where('group', $group)->get()->toArray();
         $data = [];
-        $form->items(function (Form\ItemsContainer $container) use ($config, &$data) {
+        $form->items(function (Form\ItemsContainer $container) use ($upload_url, $config, &$data) {
             foreach ($config as $c) {
                 $data[$c['name']] = $c['value'];
                 switch ($c['type']) {
                     case self::$TEXT:
-                        $container->input($c['name'], $c['title'])->setPlaceholder('输入网站名');
+                        $container->input($c['name'], $c['title'], $c['tips']);
                         break;
                     case self::$TEXTAREA:
-                        $container->textarea($c['name'], $c['title']);
+                        $container->textarea($c['name'], $c['title'], $c['tips']);
                         break;
                     case self::$IMAGE:
                         $data[$c['name']] = [];
@@ -45,15 +51,15 @@ class ConfigController extends ResourceController
                                 'url' => Files::query()->where('id', $fid)->value('url'),
                             ];
                         }
-                        $container->image_upload($c['name'], $c['title'], '提示')
-                            ->setConfigUrl(route('admin.upload'))
+                        $container->image_upload($c['name'], $c['title'], $c['tips'])
+                            ->setConfigUrl($upload_url)
                             ->setMaxCount(1);
                         break;
                     case self::$SELECT:
-                        $container->select($c['name'], $c['title'])->setOptions(json_decode($c['option'], true));
+                        $container->select($c['name'], $c['title'], $c['tips'])->setOptions(json_decode($c['option'], true));
                         break;
                     case self::$WANG_EDITOR:
-                        $container->wang_editor($c['name'], $c['title'])->setUploadConfigUrl(route('admin.upload'));
+                        $container->wang_editor($c['name'], $c['title'], $c['tips'])->setUploadConfigUrl($upload_url);
                         break;
                     default:
                         break;
@@ -75,7 +81,7 @@ class ConfigController extends ResourceController
 
         foreach ($data as $d) {
             $value = \request()->input($d['name']);
-            if($d['type'] == 'image'){
+            if ($d['type'] == self::$IMAGE) {
                 $id = array_column($value,'id');
                 $value = implode(',',$id);
             }

@@ -11,6 +11,9 @@ class AdminRoleService
     public function update(AdminRole $role,array $permissions){
         DB::transaction(function () use ($permissions, $role){
             $role->save();
+            if ($role->id == config('admin.super_admin_role_id')) {
+                return;
+            }
             AdminRolePermission::query()->where('role_id',$role->id)->delete();
             collect($permissions)->map(function ($permission) use ($role) {
                 $rp=new AdminRolePermission();

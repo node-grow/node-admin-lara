@@ -3,58 +3,66 @@
 namespace NodeAdmin\Http\Middlewares;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
 use NodeAdmin\Models\AdminUser;
+use NodeAdmin\Services\AdminPermissionService;
 
 class CheckPermission
 {
-    protected $cached=true;
+    protected $cached = false;
+    protected $service;
 
-    protected function getCachedPaths(){
-        $token=\request()->bearerToken();
-        return cache()->get($token.'.permission_paths') ?? [];
+    public function __construct(AdminPermissionService $service)
+    {
+        $this->service = $service;
     }
 
-    protected function cachedPermission(){
-        $token=\request()->bearerToken();
-        $path=\request()->getPathInfo();
-        cache()->set($token.'.permission_paths',[...$this->getCachedPaths(),$path],600);
+    protected function getCachedRoutes()
+    {
+        $token = \request()->bearerToken();
+        return cache()->get($token . '.permission_routes') ?? [];
+    }
+
+    protected function cachedPermission()
+    {
+        $token = \request()->bearerToken();
+        $current_name = Route::currentRouteName();
+        cache()->set($token . '.permission_routes', [...$this->getCachedRoutes(), $current_name], 600);
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, \Closure $next)
     {
-        if ($this->cached && $this->checkCache()){
+        if ($this->cached && $this->checkCache()) {
             return $next($request);
         }
-        if (!$this->check($request)){
-            abort(403,'无此操作权限');
+        if (!$this->check($request)) {
+            abort(403, '无此操作权限');
         }
 
         $this->cachedPermission();
         return $next($request);
     }
 
-    protected function checkCache(){
-        $path=\request()->getPathInfo();
-        return in_array($path,$this->getCachedPaths());
+    protected function checkCache()
+    {
+        $current_name = Route::currentRouteName();
+        return in_array($current_name, $this->getCachedRoutes());
     }
 
-    protected function check(Request $request){
+    protected function check(Request $request)
+    {
         /** @var AdminUser $user */
-        $user=$request->user();
-        $permissions=$user->append('permissions')->permissions;
-        foreach ($permissions as $permission) {
-            if ($request->is(Str::replace('.','/',$permission->path))){
-                return true;
-            }
+        $user = $request->user();
+        if ($user->role->id == config('admin.super_admin_role_id')) {
+            return true;
         }
-        return false;
+        return $this->service->check(\request()->route(), $user);
     }
 }

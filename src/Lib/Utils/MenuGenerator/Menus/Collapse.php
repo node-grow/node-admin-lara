@@ -1,6 +1,6 @@
 <?php
 
-namespace NodeAdmin\Lib\Utils\MenuGenerator\Menu;
+namespace NodeAdmin\Lib\Utils\MenuGenerator\Menus;
 
 use NodeAdmin\Lib\Utils\MenuGenerator\MenuContainer;
 use NodeAdmin\Models\AdminMenu;

@@ -32,16 +32,18 @@ class AdminUserService
         return true;
     }
 
-    public function saveVidation()
+    public function saveVidation($check_password = true)
     {
         Validator::make(\request()->input(),[
             'username'=>['required'],
-            'password'=>['required',Password::min(6)]
-        ],[],['username'=>'用户名','password'=>'密码'])->validate();
+            'password' => $check_password ? ['required', Password::min(6)] : [Password::min(6)],
+            'role_id' => ['required'],
+        ], [], ['username' => '用户名', 'password' => '密码', 'role_id' => '角色'])->validate();
 
         $username = request()->input('username');
         $password = request()->input('password');
+        $role_id = request()->input('role_id');
         $password = \Illuminate\Support\Facades\Hash::make($password);
-        return [$username,$password];
+        return [$username, $password, $role_id];
     }
 }
