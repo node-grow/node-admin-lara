@@ -76,11 +76,7 @@ if (!function_exists('getFilesValueById')) {
         if (is_string($ids) || is_numeric($ids)) {
             $ids = explode(',', $ids);
         }
-        return array_map(fn($id) => [
-            'id' => $id,
-            'url' => getFileUrl($id, $options),
-            'name' => Files::query()->find($id)->filename ?: ''
-        ], $ids);
+        return array_map(fn($id) => Files::query()->find($id), $ids);
     }
 }
 

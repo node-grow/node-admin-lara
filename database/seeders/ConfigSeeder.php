@@ -30,7 +30,7 @@ class ConfigSeeder extends Seeder
                     'name' => 'LOGO',
                     'title'=>'网站logo',
                     'type' => 'image',
-                    'value' => 'https://wenjiandizhi.com',
+                    'value' => '',
                     'tips' => '图片上传大小是100x100',
                 ]
             ]

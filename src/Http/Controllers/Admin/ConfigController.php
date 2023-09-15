@@ -7,7 +7,6 @@ use NodeAdmin\Lib\NodeContent\NodeResponse;
 use NodeAdmin\Lib\NodeContent\Tab;
 use NodeAdmin\Lib\ResourceController;
 use NodeAdmin\Models\Config;
-use NodeAdmin\Models\Files;
 
 class ConfigController extends ResourceController
 {
@@ -44,13 +43,7 @@ class ConfigController extends ResourceController
                         $container->textarea($c['name'], $c['title'], $c['tips']);
                         break;
                     case self::$IMAGE:
-                        $data[$c['name']] = [];
-                        foreach (explode(',', $c['value']) as $fid) {
-                            $data[$c['name']][] = [
-                                'id' => $fid,
-                                'url' => Files::query()->where('id', $fid)->value('url'),
-                            ];
-                        }
+                        $data[$c['name']] = getFilesValueByIds($c['value']);
                         $container->image_upload($c['name'], $c['title'], $c['tips'])
                             ->setConfigUrl($upload_url)
                             ->setMaxCount(1);
@@ -82,8 +75,8 @@ class ConfigController extends ResourceController
         foreach ($data as $d) {
             $value = \request()->input($d['name']);
             if ($d['type'] == self::$IMAGE) {
-                $id = array_column($value,'id');
-                $value = implode(',',$id);
+                $id = array_column($value, 'id');
+                $value = implode(',', $id);
             }
             $config->query()->where('name', $d['name'])->update(['value' => $value]);
         }
