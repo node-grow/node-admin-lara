@@ -14,6 +14,8 @@ class TabContainer extends BaseContent
 
     public function tab_pane(string $name, string $title, string $url, string $method = 'get')
     {
-        $this->render_data[] = new TabPanel($name, $title, $url, $method);
+        $panel = new TabPanel($name, $title, $url, $method);
+        $this->render_data[] = $panel;
+        return $panel;
     }
 }
