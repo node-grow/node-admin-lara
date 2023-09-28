@@ -2,13 +2,14 @@
 
 namespace NodeAdmin\Http\Controllers\Admin;
 
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use NodeAdmin\Lib\NodeContent\Form;
 use NodeAdmin\Lib\NodeContent\Table;
 use NodeAdmin\Lib\ResourceController;
 use NodeAdmin\Lib\ResourceControllerTrait;
-use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Opcodes\LogViewer\Facades\LogViewer;
+use Opcodes\LogViewer\LogFile;
+use Opcodes\LogViewer\Logs\Log;
 
 class LogController extends ResourceController
 {
@@ -16,10 +17,14 @@ class LogController extends ResourceController
 
     public function table(Table $table)
     {
-        $log_viewer=new LaravelLogViewer();
-        $files=$log_viewer->getFiles(true);
+        $files = LogViewer::getFiles();
         $table->filters(function (Table\FiltersContainer $container) use ($files) {
-            $container->select('file_index','文件')->setOptions($files);
+            $container->select('file', '文件')->setOptions($files->map(function (LogFile $file) {
+                return [
+                    'label' => $file->name,
+                    'value' => $file->name
+                ];
+            })->toArray());
             $container->input('text','信息');
         });
         $table->columns(function (Table\ColumnsContainer $container){
@@ -35,7 +40,7 @@ class LogController extends ResourceController
                     ->setMethod('post');
             });
         });
-        $table->setFiltersData(['file_index'=>0]);
+        $table->setFiltersData(['file' => $files->first()->name]);
         return $table;
     }
 
@@ -55,32 +60,28 @@ class LogController extends ResourceController
 
     public function dataList()
     {
-        $log_viewer=new LaravelLogViewer();
-        $files=$log_viewer->getFiles(true);
-        $file=$files[0];
-        if ($file_index=request()->input('file_index')){
-            $file=$files[$file_index];
+        $files = LogViewer::getFiles();
+        /** @var LogFile $file */
+        $file = $files->first();
+        if ($file_index = request()->input('file')) {
+            $file = $files->where('name', $file_index)->first();
         }
-        $log_viewer->setFile($file);
 
-        $logs = $log_viewer->all();
+        $logs = $file->logs();
         if ($search=request()->input('text')){
-            $logs=collect($logs)->filter(function ($item) use ($search){
-                return Str::contains($item['text'],$search);
-            })->values();
+            $logs = $logs->search($search);
         }
 
-        $logs=collect($logs)->map(function ($item){
+        $logs = $logs->reverse()->paginate()->through(function (Log $item) {
             $res=[];
-            $res['text_short']=Str::limit($item['text'],60);
-            $res['level']=__($item['level']);
+            $res['text_short'] = Str::limit($item->message, 60);
+            $res['level'] = __($item->level);
             $res['content']=json_encode($item);
-            $res['date']=$item['date'];
+            $res['date'] = $item->datetime->format('Y-m-d H:i:s');
             $res['id']=Str::uuid();
             return $res;
         });
 
-        $page=new LengthAwarePaginator($logs,$logs->count(),10);
-        return $this->transformDataList($page);
+        return $this->transformDataList($logs);
     }
 }

@@ -28,7 +28,7 @@
         "laravel-lang/publisher": "^13.0 | ^14.0",
         "wi1dcard/china-divisions": "^0.3.0",
         "symfony/filesystem": ">=6.0",
-        "rap2hpoutre/laravel-log-viewer": "^2.2"
+        "opcodesio/log-viewer": "^v3.1.4"
     },
     "extra": {
         "laravel": {
