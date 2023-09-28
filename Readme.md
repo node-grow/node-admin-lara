@@ -70,7 +70,31 @@
 
 ## 更新日志
 
-### 1.2.6
+### 1.4.0
+
+1. 渲染类型tabPanel及操作modal、addTab增加前置渲染数据功能
+
+```php
+/** @var Form $form */
+$form = app()->make(Form::class);
+$form->items(function (Form\ItemsContainer $container) {
+    $container->text('name', 'name')->setText('name');
+});
+$form->actions(function (Form\ActionsContainer $container) {
+    /** @var Table $table */
+    $table = app()->make(Table::class);
+    $table->columns(function (Table\ColumnsContainer $container) {
+        $container->text('id', 'ID');
+    });
+    $container->button('小样tab')->addTab('', '小样tab')->setNodeData($table);
+    $container->button('小样modal')->modal('', '小样modal')->setNodeData($table);
+});
+$container->tab_pane('list', '列表', '')->setNodeData($form);
+```
+
+2. 改用opcodesio/log-viewer包读取日志文件，提升日志读取速度
+
+### 1.3.0
 
 1. 增加菜单生成工具类
 
