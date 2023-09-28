@@ -48,13 +48,12 @@ class LogController extends ResourceController
     {
         $form->setOnlyShow(true);
         $form->items(function (Form\ItemsContainer $container){
-            $container->input('text','信息');
+            $container->input('message', '信息');
             $container->input('level','等级');
-            $container->input('date','时间');
+            $container->input('datetime', '时间');
             $container->input('stack','堆栈');
         });
-        $content=json_decode(request()->input('content'),true);
-        $form->setData($content);
+        $form->setData(request()->input('content'));
         return $form;
     }
 
@@ -68,7 +67,7 @@ class LogController extends ResourceController
         }
 
         $logs = $file->logs();
-        if ($search=request()->input('text')){
+        if ($search = request()->input('query')) {
             $logs = $logs->search($search);
         }
 
@@ -76,9 +75,15 @@ class LogController extends ResourceController
             $res=[];
             $res['text_short'] = Str::limit($item->message, 60);
             $res['level'] = __($item->level);
-            $res['content']=json_encode($item);
             $res['date'] = $item->datetime->format('Y-m-d H:i:s');
             $res['id']=Str::uuid();
+            $res['text'] = $item->getOriginalText();
+            $res['content'] = [
+                'message' => $item->message,
+                'level' => $item->level,
+                'datetime' => $item->datetime->format('Y-m-d H:i:s'),
+                'stack' => $item->getOriginalText(),
+            ];
             return $res;
         });
 
