@@ -29,8 +29,8 @@ class Constants
     static public function cacheUpdate(){
         $class = new \ReflectionClass(get_called_class());
         $md5 = md5_file($class->getFileName());
-        cache()->set('constants_md5',$md5);
         $old_md5 = cache()->get('constants_md5') ?: '';
+        cache()->set('constants_md5',$md5);
         if ($md5===$old_md5){
             return;
         }
