@@ -61,9 +61,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' =>\NodeAdminDatabase\Seeders\AdminMenuSeeder::class]);
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' =>\NodeAdminDatabase\Seeders\AdminUserSeeder::class]);
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' =>\NodeAdminDatabase\Seeders\ConfigSeeder::class]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => \NodeAdminDatabase\Seeders\AdminMenuSeeder::class, '--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => \NodeAdminDatabase\Seeders\AdminUserSeeder::class, '--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => \NodeAdminDatabase\Seeders\ConfigSeeder::class, '--force' => true]);
 
     }
 

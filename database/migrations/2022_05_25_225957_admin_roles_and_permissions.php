@@ -46,8 +46,8 @@ return new class extends Migration
             $table->index(['role_id','permission_id']);
         });
 
-        Artisan::call('db:seed', ['--class' =>Seeders\AdminRoleSeeder::class]);
-        Artisan::call('db:seed', ['--class' =>Seeders\AdminPermissionSeeder::class]);
+        Artisan::call('db:seed', ['--class' => Seeders\AdminRoleSeeder::class, '--force' => true]);
+        Artisan::call('db:seed', ['--class' => Seeders\AdminPermissionSeeder::class, '--force' => true]);
     }
 
     /**
