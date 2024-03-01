@@ -28,14 +28,15 @@ class FileFieldAttribute extends Attribute
                 if ($file_list instanceof Files) {
                     return $file_list->id;
                 }
+
+                if (!$file_list) {
+                    return $file_list;
+                }
                 if ($isMultiple) {
                     if ($file_list instanceof Collection) {
                         return $file_list->map(fn($file) => $file['id'])->join(',');
                     }
                     return implode(',', array_map(fn($file) => $file['id'], $file_list));
-                }
-                if (!$file_list) {
-                    return $file_list;
                 }
                 if (is_array($file_list)) {
                     if (array_values($file_list) !== $file_list) {
