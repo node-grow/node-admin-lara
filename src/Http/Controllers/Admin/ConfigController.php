@@ -18,12 +18,18 @@ class ConfigController extends ResourceController
 
     protected $upload_url = '';
 
+    protected $config_groups = [
+        ['name' => 'default', 'title' => '默认'],
+        ['name' => 'other', 'title' => '其它'],
+    ];
+
     public function getConfig(Form $form, Tab $tab, string $group = '')
     {
         if (!$group) {
             $tab->tabs(function (Tab\TabContainer $container) {
-                $container->tab_pane('default', '默认', route('admin.sysSetting.index', ['group' => 'default']));
-                $container->tab_pane('other', '其它', route('admin.sysSetting.index', ['group' => 'other']));
+                foreach ($this->config_groups as $config_group) {
+                    $container->tab_pane($config_group['name'], $config_group['title'], route('admin.sysSetting.index', ['group' => $config_group['name']]));
+                }
             });
             return $tab;
         }
