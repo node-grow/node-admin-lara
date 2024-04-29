@@ -65,8 +65,8 @@ class ConfigController extends ResourceController
                 }
             }
         });
-        $form->actions(function (Form\ActionsContainer $container) {
-            $container->submit('保存')->request(action([get_class($this), 'update']), 'post');
+        $form->actions(function (Form\ActionsContainer $container) use ($group) {
+            $container->submit('保存')->request(action([get_class($this), 'update'], ['group' => $group]), 'post');
         });
 
         $form->setData($data);
@@ -74,21 +74,38 @@ class ConfigController extends ResourceController
         return $form;
     }
 
-    public function update(Config $config)
+    public function update($group = 'default')
     {
-        $data = $config->query()->get()->toArray();
-
-        foreach ($data as $d) {
-            $value = \request()->input($d['name']);
-            if ($d['type'] == self::$IMAGE) {
-                $id = array_column($value, 'id');
-                $value = implode(',', $id);
-            }
-            $config->query()->where('name', $d['name'])->update(['value' => $value]);
+        $query = Config::query();
+        if ($group) {
+            $query->where('group', $group);
         }
+        $data = $query->get()->toArray();
+
+        \DB::transaction(function () use ($data) {
+            foreach ($data as $d) {
+                $value = \request()->input($d['name']);
+                $value = $this->transformValue($d, $value);
+                Config::query()->where('name', $d['name'])->update(['value' => $value]);
+            }
+        });
 
         return new NodeResponse('', '保存成功');
 
+    }
+
+    protected function transformValue($item, $value)
+    {
+        switch ($item['type']) {
+            case self::$IMAGE:
+                if ($value) {
+                    $id = array_column($value, 'id');
+                    $value = implode(',', $id);
+                }
+                break;
+        }
+
+        return $value;
     }
 
 

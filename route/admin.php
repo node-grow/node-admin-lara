@@ -28,7 +28,7 @@ Route::middleware('admin:auth')->group(function () {
     Route::put('menu//{menu}/sort', [Controllers\Admin\AdminMenuController::class, 'sort'])->name('menu.sort');
 
     Route::get('sysSetting/{group?}', [Controllers\Admin\ConfigController::class, 'getConfig'])->name('sysSetting.index');
-    Route::post('update', [Controllers\Admin\ConfigController::class, 'update'])->name('config.update');
+    Route::post('update/{group?}', [Controllers\Admin\ConfigController::class, 'update'])->name('config.update');
 
     Route::resource('permission', Controllers\Admin\PermissionController::class);
     Route::resource('role', Controllers\Admin\RoleController::class);
