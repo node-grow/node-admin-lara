@@ -17,38 +17,42 @@ use NodeAdmin\Lib\NodeContent\Form\Items\Password;
 use NodeAdmin\Lib\NodeContent\Form\Items\Radio;
 use NodeAdmin\Lib\NodeContent\Form\Items\Select;
 use NodeAdmin\Lib\NodeContent\Form\Items\SwitchCase;
+use NodeAdmin\Lib\NodeContent\Form\Items\Table;
 use NodeAdmin\Lib\NodeContent\Form\Items\Text;
 use NodeAdmin\Lib\NodeContent\Form\Items\Textarea;
 use NodeAdmin\Lib\NodeContent\Form\Items\WangEditor;
 
 /**
- * @method Text text($name, $label, $tips = '')
- * @method Input input($name, $label, $tips='')
- * @method Textarea textarea($name,$label,$tips='')
- * @method ImageUpload image_upload($name, $label, $tips='')
- * @method Select select($name,$label,$tips='')
- * @method Checkbox checkbox($name, $label, $tips='')
- * @method Radio radio($name,$label,$tips='')
- * @method Password password($name,$label,$tips='')
- * @method Date date($name,$label,$tips='')
- * @method DateRange date_range($name,$label,$tips='')
- * @method SwitchCase switch_case($name,$label,$tips='')
- * @method WangEditor wang_editor($name,$label,$tips='')
- * @method Iconfont iconfont($name,$label,$tips='')
- * @method Custom custom($name,$label='',$tips='')
- * @method Division division($name,$label='',$tips='')
- * @method FileUpload file_upload($name,$label='',$tips='')
+ * @method Text text($name, $label = null, $tips = '')
+ * @method Input input($name, $label = null, $tips = '')
+ * @method Textarea textarea($name, $label = null, $tips = '')
+ * @method ImageUpload image_upload($name, $label, $tips = '')
+ * @method Select select($name, $label = null, $tips = '')
+ * @method Checkbox checkbox($name, $label, $tips = '')
+ * @method Radio radio($name, $label = null, $tips = '')
+ * @method Password password($name, $label = null, $tips = '')
+ * @method Date date($name, $label = null, $tips = '')
+ * @method DateRange date_range($name, $label = null, $tips = '')
+ * @method SwitchCase switch_case($name, $label = null, $tips = '')
+ * @method WangEditor wang_editor($name, $label = null, $tips = '')
+ * @method Iconfont iconfont($name, $label = null, $tips = '')
+ * @method Custom custom($name, $label = null, $tips = '')
+ * @method Division division($name, $label = null, $tips = '')
+ * @method FileUpload file_upload($name, $label = null, $tips = '')
+ * @method Table table($name, $label = null, $tips = '')
  */
 class ItemsContainer extends Container
 {
 
-    protected $render_data=[];
+    protected $render_data = [];
 
-    public function addItem(BaseItem $item){
-        $this->render_data[]=$item;
+    public function addItem(BaseItem $item)
+    {
+        $this->render_data[] = $item;
     }
 
-    public function getItems(){
+    public function getItems()
+    {
         return $this->render_data;
     }
 
