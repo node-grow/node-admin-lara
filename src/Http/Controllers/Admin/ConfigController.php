@@ -116,7 +116,11 @@ class ConfigController extends ResourceController
         return [
             'system_name' => $config['value'],
             'iconfont_url' => \config('admin.iconfont_symbol_url'),
-            'default_tabs' => $default_tab
+            'default_tabs' => $default_tab,
+
+            'extra_scripts' => [
+                asset('components/test-component.umd.js')
+            ]
         ];
     }
 }

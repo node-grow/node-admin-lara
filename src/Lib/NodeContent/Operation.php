@@ -6,6 +6,7 @@ use NodeAdmin\Lib\NodeContent\Operation\AddTab;
 use NodeAdmin\Lib\NodeContent\Operation\BaseOperation;
 use NodeAdmin\Lib\NodeContent\Operation\GotoAsA;
 use NodeAdmin\Lib\NodeContent\Operation\Modal;
+use NodeAdmin\Lib\NodeContent\Operation\Navigate;
 use NodeAdmin\Lib\NodeContent\Operation\Request;
 use NodeAdmin\Lib\NodeContent\Traits\AutoCallByType;
 
@@ -14,6 +15,7 @@ use NodeAdmin\Lib\NodeContent\Traits\AutoCallByType;
  * @method Modal modal($url, $title, $type = 'node_content')
  * @method Request request($url, $method, $body = null)
  * @method GotoAsA gotoAsA($url, $target = '_blank')
+ * @method Navigate navigate($url)
  */
 trait Operation
 {

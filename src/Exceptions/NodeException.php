@@ -30,4 +30,18 @@ class NodeException extends Exception implements Renderable
         $this->message=$message;
     }
 
+    public function report()
+    {
+        if (app()->runningInConsole() && !request()) {
+            return false;
+        }
+
+        foreach (config('admin.modules') as $module) {
+            if (request()->is(trim($module['route']['prefix'], '/') . '/*')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
