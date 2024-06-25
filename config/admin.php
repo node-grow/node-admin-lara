@@ -42,4 +42,6 @@ return [
 
     'super_admin_role_id' => 1,
 
+    'extra_scripts' => [],
+
 ];

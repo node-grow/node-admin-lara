@@ -118,9 +118,7 @@ class ConfigController extends ResourceController
             'iconfont_url' => \config('admin.iconfont_symbol_url'),
             'default_tabs' => $default_tab,
 
-            'extra_scripts' => [
-                asset('components/test-component.umd.js')
-            ]
+            'extra_scripts' => \config('admin.extra_scripts')
         ];
     }
 }

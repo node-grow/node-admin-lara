@@ -4,6 +4,7 @@ namespace NodeAdmin\Lib\NodeContent\Table\Columns;
 
 use Illuminate\Support\Str;
 use NodeAdmin\Lib\NodeContent\BaseContent;
+use NodeAdmin\Lib\NodeContent\Table\Columns\Filters\BaseFilter;
 
 abstract class BaseColumn extends BaseContent
 {
@@ -12,7 +13,9 @@ abstract class BaseColumn extends BaseContent
         'type'=>'',
         'name'=>'',
         'title'=>'',
+        'sortable' => false,
         'column_option'=>[],
+        'filter' => null,
     ];
 
     protected function getType():string{
@@ -27,5 +30,17 @@ abstract class BaseColumn extends BaseContent
         $this->render_data['type']=$this->getType();
         $this->render_data['name']=$name;
         $this->render_data['title']=$title?:$name;
+    }
+
+    public function sortable(bool $sortable)
+    {
+        $this->render_data['sortable'] = $sortable;
+        return $this;
+    }
+
+    public function setFilter(BaseFilter $filter)
+    {
+        $this->render_data['filter'] = $filter;
+        return $this;
     }
 }
